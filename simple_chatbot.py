@@ -1,18 +1,16 @@
-import openai
+from openai import OpenAI
 import os
 
-# Load your API key (replace with your actual key or use os.getenv('OPENAI_API_KEY'))
-openai.api_key = 'your-api-key-here'  # Better: os.getenv('OPENAI_API_KEY')
+api_key = os.getenv('OPENAI_API_KEY')
+client = OpenAI(api_key=api_key) # Initialize OpenAI client with your API key
 
 def chatbot_response(user_message):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # Affordable model for beginners
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},  # System prompt sets behavior
-            {"role": "user", "content": user_message}  # User's input
-        ]
-    )
-    return response.choices[0].message['content']
+    response = client.chat.completions.create(model="gpt-3.5-turbo",  # Affordable model for beginners
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant."},  # System prompt sets behavior
+        {"role": "user", "content": user_message}  # User's input
+    ])
+    return response.choices[0].message.content
 
 # Interactive loop
 print("Chatbot ready! Type 'exit' to quit.")
